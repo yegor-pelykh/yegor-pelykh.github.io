@@ -6,7 +6,7 @@ import { exportNode, StyleTransferMode } from 'dom-node-export';
 import { Helpers } from '../helpers';
 
 // My server address for processing elementary security tokens.
-const elsecServerAddress = 'http://elsec.fly.dev';
+const elsecServerAddress = 'https://elsec.fly.dev';
 
 @Component({
   selector: 'app-cv',
