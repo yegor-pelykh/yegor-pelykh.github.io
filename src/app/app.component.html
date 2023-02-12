@@ -1,0 +1,21 @@
+<app-background class="background"></app-background>
+<div class="header" #header [ngClass]="{'presentation': presentationMode}">
+    <div class="name-container-stub"></div>
+    <div class="nav-bar">
+        <a class="nav-bar-item" routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page">About</a>
+        <a class="nav-bar-item" routerLink="/projects" routerLinkActive="active"
+            ariaCurrentWhenActive="page">Projects</a>
+        <a class="nav-bar-item" routerLink="/cv" routerLinkActive="active" ariaCurrentWhenActive="page">CV</a>
+        <a class="nav-bar-item" routerLink="/contacts" routerLinkActive="active"
+            ariaCurrentWhenActive="page">Contacts</a>
+    </div>
+</div>
+<div #contentArea class="content-area" [ngStyle]="{'margin-top.px': headerHeight - 10, 'height': 'calc(100% - '+(headerHeight - 10)+'px)'}" [ngClass]="{'presentation': presentationMode}">
+    <div class="content-sheet">
+        <router-outlet (activate)="onActivate($event)"></router-outlet>
+    </div>
+</div>
+<div class="footer">{{getCopyrightNotice()}}</div>
+<div class="name-container" [ngClass]="{'presentation': presentationMode}">
+    <div class="name-block" (click)="togglePresentationMode()" data-title="Yegor Pelykh">Yegor Pelykh</div>
+</div>
