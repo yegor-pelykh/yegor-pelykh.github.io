@@ -9,7 +9,7 @@ export class BackgroundComponent implements AfterViewInit, AfterViewChecked, OnD
   @ViewChild('backgroundCanvas')
   private bgCanvas?: ElementRef<HTMLCanvasElement>;
   private bgCanvasContext?: CanvasRenderingContext2D;
-  private bgTimer?: NodeJS.Timer;
+  private bgTimeout?: NodeJS.Timeout;
   private bgCanvasWidth: number = 0;
   private bgCanvasHeight: number = 0;
 
@@ -32,9 +32,9 @@ export class BackgroundComponent implements AfterViewInit, AfterViewChecked, OnD
     for (let i = 0; i < columns; i++) {
       drops[i] = 1;
     }
-    if (this.bgTimer != null)
-      clearInterval(this.bgTimer);
-    this.bgTimer = setInterval(() => {
+    if (this.bgTimeout != null)
+      clearInterval(this.bgTimeout);
+    this.bgTimeout = setInterval(() => {
       if (this.bgCanvasContext == null) return;
       this.bgCanvasContext.fillStyle = BackgroundComponent.backgroundColor;
       this.bgCanvasContext.fillRect(0, 0, this.bgCanvasWidth, this.bgCanvasHeight);
@@ -59,9 +59,9 @@ export class BackgroundComponent implements AfterViewInit, AfterViewChecked, OnD
   }
 
   ngOnDestroy(): void {
-    if (this.bgTimer != null) {
-      clearInterval(this.bgTimer);
-      this.bgTimer = undefined;
+    if (this.bgTimeout != null) {
+      clearInterval(this.bgTimeout);
+      this.bgTimeout = undefined;
     }
   }
 
