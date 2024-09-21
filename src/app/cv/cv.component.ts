@@ -32,16 +32,22 @@ export class CVComponent {
     private http: HttpClient
   ) { }
 
-  submitAuth() {
+  submitAuth(event: SubmitEvent) {
     const token = this.authForm.value.authToken;
-    if (typeof token === 'string') {
-      this.requestCV(token);
+    if (typeof token !== 'string') {
+      return;
     }
+    const submitter = event.submitter;
+    if (submitter === null) {
+      return;
+    }
+    const value = (<any>submitter).value as string;
+    this.requestCV(token, value);
   }
 
-  requestCV(token: string) {
+  requestCV(token: string, lang: string) {
     this.isRequesting = true;
-    this.http.get('assets/data/cv.bin', { responseType: 'arraybuffer' }).subscribe({
+    this.http.get(`assets/data/cv-${lang}.bin`, { responseType: 'arraybuffer' }).subscribe({
       next: data => {
         const dataToDecrypt = Buffer.from(data).toString('base64');
         this.http.post<any>(`${elsecServerAddress}/c/dec`, {

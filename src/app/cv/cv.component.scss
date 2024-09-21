@@ -23,7 +23,7 @@
     border-radius: 7px;
     padding: .5rem;
     transition: background-color 250ms;
-    
+
     &.hidden {
         display: none;
     }
@@ -67,11 +67,18 @@
         }
     }
 
-    .cv-auth-submit {
+    .cv-auth-submit-row {
+      flex: 0 0 auto;
+      align-self: center;
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      & .cv-auth-submit {
         flex: 0 0 auto;
-        align-self: center;
-        margin-top: 1rem;
-        width: min(150px, 100%);
+        width: 150px;
         background-color: #18A558;
         border-top: 1px solid #18A558;
         border-left: 1px solid #18A558;
@@ -93,6 +100,11 @@
             border-right: 1px solid rgba(24, 165, 88, 0.5);
             border-bottom: 1px solid rgba(17, 101, 48, 0.5);
         }
+      }
+
+      & .cv-auth-submit:not(:first-child) {
+        margin-left: 10px;
+      }
     }
 
     &.hidden {
