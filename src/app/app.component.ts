@@ -1,7 +1,16 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { BackgroundComponent } from './background/background.component';
+import { NgClass, NgIf, NgStyle } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
+  imports: [
+    BackgroundComponent,
+    NgClass,
+    NgStyle,
+    RouterModule,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
@@ -23,6 +32,13 @@ export class AppComponent implements AfterViewInit {
   @HostListener('window:wheel', ['$event'])
   onWheel(event: WheelEvent) {
     if (this.presentationMode && event.deltaY > 0) {
+      this.presentationMode = false;
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.presentationMode && event.key === 'ArrowDown') {
       this.presentationMode = false;
     }
   }

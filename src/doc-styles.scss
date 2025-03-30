@@ -6,9 +6,9 @@
     width: 100%;
     font-size: 2rem;
     font-weight: bold;
-    padding-bottom: 5px;
+    padding-bottom: .4rem;
     border-bottom: 1px solid;
-    margin-bottom: .5rem;
+    margin-bottom: .8rem;
 }
 
 .doc-expander {
@@ -17,14 +17,13 @@
 
 .doc-subheader {
     display: block;
-    font-size: 1.17rem;
+    font-size: 1.2rem;
     font-weight: bold;
     padding: .2em 0;
 }
 
 .doc-paragraph {
-    padding: .15em 0;
-    text-align: justify;
+    padding: .2rem 0;
 }
 
 .doc-list {
