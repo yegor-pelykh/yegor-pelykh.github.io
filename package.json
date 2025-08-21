@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build && shx cp docs/browser/index.html docs/browser/404.html",
     "build:watch": "ng build --configuration development --watch",
-    "build:prod": "ng build --configuration production"
+    "build:prod": "ng build --configuration production && shx cp docs/browser/index.html docs/browser/404.html"
   },
   "private": true,
   "dependencies": {

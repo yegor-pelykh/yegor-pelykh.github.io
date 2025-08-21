@@ -40,26 +40,17 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": {
-              "base": "docs"
+              "base": "docs",
+              "browser": ""
             },
             "index": "src/index.html",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/doc-styles.scss",
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/doc-styles.scss", "src/styles.scss"],
             "scripts": [],
-            "allowedCommonJsDependencies": [
-              "buffer"
-            ],
+            "allowedCommonJsDependencies": ["buffer"],
             "browser": "src/main.ts"
           },
           "configurations": {
@@ -115,21 +106,12 @@
           "builder": "@angular/build:karma",
           "options": {
             "main": "src/test.ts",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/doc-styles.scss",
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/doc-styles.scss", "src/styles.scss"],
             "scripts": []
           }
         }
