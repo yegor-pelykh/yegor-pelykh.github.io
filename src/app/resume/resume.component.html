@@ -1,21 +1,46 @@
 <div class="doc-section-title">
-    <span>Resume</span>
-    <button class="cv-save-button" [ngClass]="{'hidden': !isAuthenticated}" (click)="saveToFile()" [disabled]="isSaving">Save to file</button>
+  <span>Resume</span>
+  <button class="cv-save-button" [ngClass]="{ hidden: !isAuthenticated() }" (click)="saveToFile()"
+    [disabled]="isSaving()" type="button">
+    Save to file
+  </button>
 </div>
-<form class="cv-auth-form" [formGroup]="authForm" (ngSubmit)="submitAuth($event)" [ngClass]="{'hidden': isAuthenticated}">
-    <p class="doc-paragraph">I'm thrilled to share my professional journey with you! Here, you'll find my resume detailing my skills, experiences, and programming projects.</p>
-    <p class="doc-paragraph">To protect my sensitive information, I've set up a unique access system—only those with a special token can view my resume.</p>
-    <p class="doc-paragraph">How can you get it?</p>
-    <p class="doc-paragraph">Simply contact me at <a href="mailto:yegor.dev@gmail.com">yegor.dev&#64;gmail.com</a>. to receive your access token. Once you have it, enter the token in the field below and click the "Open Resume ..." button.</p>
-    <p class="doc-paragraph">Your token will be valid for one year, giving you plenty of time to explore my background.</p>
-    <p class="doc-paragraph">Thank you for your interest, and I look forward to connecting!</p>
-    <input type="text" class="cv-auth-token-field" maxlength="32" formControlName="authToken"
-        placeholder="Input token here">
-    <div class="cv-auth-submit-row">
-      <button type="submit" value="en" class="cv-auth-submit" [disabled]="!authForm.valid || isRequesting">Open Resume in English</button>
-      <button type="submit" value="ru" class="cv-auth-submit" [disabled]="!authForm.valid || isRequesting">Open Resume in Russian</button>
-    </div>
-    <div class="cv-auth-error" [ngClass]="{'hidden': errorMessage.length === 0}">{{errorMessage}}</div>
+
+<form class="cv-auth-form" [formGroup]="authForm" (ngSubmit)="submitAuth($event)"
+  [ngClass]="{ hidden: isAuthenticated() }" autocomplete="off">
+  <p class="doc-paragraph">
+    I'm thrilled to share my professional journey with you! Here, you'll find my resume detailing my skills,
+    experiences, and programming projects.
+  </p>
+  <p class="doc-paragraph">
+    To protect my sensitive information, I've set up a unique access system—only those with a special token can view my
+    resume.
+  </p>
+  <p class="doc-paragraph">How can you get it?</p>
+  <p class="doc-paragraph">
+    Simply contact me at
+    <a href="mailto:yegor.dev@gmail.com">yegor.dev&#64;gmail.com</a>
+    to receive your access token. Once you have it, enter the token in the field below and click the "Open Resume ..."
+    button.
+  </p>
+  <p class="doc-paragraph">
+    Your token will be valid for one year, giving you plenty of time to explore my background.
+  </p>
+  <p class="doc-paragraph">Thank you for your interest, and I look forward to connecting!</p>
+  <input type="text" class="cv-auth-token-field" maxlength="32" formControlName="authToken"
+    placeholder="Input token here" autocomplete="off" />
+  <div class="cv-auth-submit-row">
+    <button type="submit" value="en" class="cv-auth-submit" [disabled]="!authForm.valid || isRequesting()">
+      Open Resume in English
+    </button>
+    <button type="submit" value="ru" class="cv-auth-submit" [disabled]="!authForm.valid || isRequesting()">
+      Open Resume in Russian
+    </button>
+  </div>
+  <div class="cv-auth-error" *ngIf="errorMessage()" [ngClass]="{ hidden: !errorMessage() }">
+    {{ errorMessage() }}
+  </div>
 </form>
-<app-content-projector [ngClass]="{'force-expanded': isForceExpanded}" [exprContext]="this" [content]="cvContent">
+
+<app-content-projector [ngClass]="{ 'force-expanded': isForceExpanded() }" [exprContext]="this" [content]="cvContent()">
 </app-content-projector>

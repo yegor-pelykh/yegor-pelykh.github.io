@@ -1,22 +1,32 @@
 <app-background class="background"></app-background>
+
 <div class="header" #header [ngClass]="{'presentation': presentationMode}">
   <div class="name-container-stub"></div>
-  <div class="nav-bar">
-    <a class="nav-bar-item" routerLink="/welcome" routerLinkActive="active" ariaCurrentWhenActive="page">Welcome</a>
-    <a class="nav-bar-item" routerLink="/projects" routerLinkActive="active" ariaCurrentWhenActive="page">Projects</a>
-    <a class="nav-bar-item" routerLink="/resume" routerLinkActive="active" ariaCurrentWhenActive="page">Resume</a>
-    <a class="nav-bar-item" routerLink="/contacts" routerLinkActive="active" ariaCurrentWhenActive="page">Contacts</a>
-  </div>
+  <ng-container *ngTemplateOutlet="navBar"></ng-container>
 </div>
+
 <div #contentArea class="content-area"
-  [ngStyle]="{'margin-top.px': headerHeight - 10, 'height': 'calc(100% - '+(headerHeight - 10)+'px)'}"
+  [ngStyle]="{'margin-top.px': headerHeight - 10, 'height': 'calc(100% - ' + (headerHeight - 10) + 'px)'}"
   [ngClass]="{'presentation': presentationMode}">
   <div class="content-sheet">
-    <router-outlet (activate)="onActivate($event)"></router-outlet>
+    <router-outlet (activate)="onActivate()"></router-outlet>
   </div>
 </div>
-<div class="footer">{{getCopyrightNotice()}}</div>
+
+<div class="footer">{{ copyrightNotice }}</div>
+
 <div class="name-container" [ngClass]="{'presentation': presentationMode}" (click)="togglePresentationMode()">
   <div class="name-block" data-title="Yegor Pelykh">Yegor Pelykh</div>
   <div class="presentation-tooltip">Press anywhere or scroll to visit the site</div>
 </div>
+
+<ng-template #navBar>
+  <div class="nav-bar">
+    <div class="nav-bar-item" routerLink="/welcome" routerLinkActive="active" ariaCurrentWhenActive="page">Welcome</div>
+    <div class="nav-bar-item" routerLink="/projects" routerLinkActive="active" ariaCurrentWhenActive="page">Projects
+    </div>
+    <div class="nav-bar-item" routerLink="/resume" routerLinkActive="active" ariaCurrentWhenActive="page">Resume</div>
+    <div class="nav-bar-item" routerLink="/contacts" routerLinkActive="active" ariaCurrentWhenActive="page">Contacts
+    </div>
+  </div>
+</ng-template>

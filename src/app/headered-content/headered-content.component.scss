@@ -1,42 +1,39 @@
 :host {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .header {
-    flex: 0 0 auto;
-    display: block;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding-top: .8rem;
-    padding-right: 0px;
-    padding-bottom: .2rem;
-    padding-left: 0px;
+  flex: 0 0 auto;
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.8rem 0 0.2rem 0;
 }
 
 .content {
-    flex: 0 0 auto;
-    padding: 0.2em 0;
+  flex: 0 0 auto;
+  padding: 0.2em 0;
 }
 
 .content ::ng-deep p:first-child {
-    padding-top: 0;
+  padding-top: 0;
 }
 
 .content ::ng-deep p:last-child {
-    padding-bottom: 0;
+  padding-bottom: 0;
 }
 
 .content ::ng-deep app-headered-content {
-    padding-left: 1rem;
+  padding-left: 1rem;
 
-    &:first-child {
-        padding-top: .7rem;
-    }
+  &:first-child {
+    padding-top: 0.7rem;
+  }
 
-    & > .header {
-        font-size: 1rem;
-    }
+  & > .header {
+    font-size: 1rem;
+  }
 }

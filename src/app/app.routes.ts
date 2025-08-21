@@ -5,7 +5,7 @@ import { ResumeComponent } from './resume/resume.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
-export const routes: Routes = [
+export const appRoutes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
   { path: 'projects', component: ProjectsComponent },
   { path: 'resume', component: ResumeComponent },

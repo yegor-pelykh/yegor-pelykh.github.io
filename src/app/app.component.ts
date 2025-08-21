@@ -1,61 +1,104 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 import { BackgroundComponent } from './background/background.component';
-import { NgClass, NgIf, NgStyle } from '@angular/common';
+import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [
     BackgroundComponent,
     NgClass,
     NgStyle,
+    NgTemplateOutlet,
     RouterModule,
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements AfterViewInit {
-  public presentationMode: boolean = true;
-  public headerHeight: number = 0;
-  @ViewChild('header')
-  private header?: ElementRef<HTMLDivElement>;
-  @ViewChild("contentArea")
-  private contentArea?: ElementRef<HTMLDivElement>;
+export class AppComponent implements AfterViewInit, OnDestroy {
+  public presentationMode = true;
+  public headerHeight = 0;
 
-  ngAfterViewInit() {
-    this.headerHeight = this.header?.nativeElement.offsetHeight ?? 0;
-    window.onresize = (ev: UIEvent) => {
-      this.headerHeight = this.header?.nativeElement.offsetHeight ?? 0;
-    };
+  @ViewChild('header', { static: true })
+  private readonly headerRef?: ElementRef<HTMLDivElement>;
+
+  @ViewChild('contentArea', { static: true })
+  private readonly contentAreaRef?: ElementRef<HTMLDivElement>;
+
+  private readonly destroy$ = new Subject<void>();
+  private removeResizeListener?: () => void;
+
+  constructor(
+    private readonly renderer: Renderer2,
+    private readonly cdr: ChangeDetectorRef
+  ) { }
+
+  public ngAfterViewInit(): void {
+    this.updateHeaderHeight();
+    this.removeResizeListener = this.renderer.listen('window', 'resize', () => {
+      this.updateHeaderHeight();
+      this.cdr.markForCheck();
+    });
   }
 
-  @HostListener('window:wheel', ['$event'])
-  onWheel(event: WheelEvent) {
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    if (this.removeResizeListener) {
+      this.removeResizeListener();
+    }
+  }
+
+  public onWheel(event: WheelEvent): void {
     if (this.presentationMode && event.deltaY > 0) {
-      this.presentationMode = false;
+      this.disablePresentationMode();
     }
   }
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
+  public onKeyDown(event: KeyboardEvent): void {
     if (this.presentationMode && event.key === 'ArrowDown') {
-      this.presentationMode = false;
+      this.disablePresentationMode();
     }
   }
 
-  togglePresentationMode() {
+  public togglePresentationMode(): void {
     this.presentationMode = !this.presentationMode;
   }
 
-  onActivate(_event: any): void {
-    if (this.contentArea != null) {
-      this.contentArea.nativeElement.scrollTop = 0;
+  public onActivate(): void {
+    this.scrollToTop();
+  }
+
+  public get copyrightNotice(): string {
+    const year = new Date().getFullYear();
+    return `© 2023${year === 2023 ? '' : ` - ${year}`}, Yegor Pelykh. All rights reserved. Copying without permission is prohibited.`;
+  }
+
+  private updateHeaderHeight(): void {
+    this.headerHeight = this.headerRef?.nativeElement.offsetHeight ?? 0;
+  }
+
+  private disablePresentationMode(): void {
+    this.presentationMode = false;
+    this.cdr.markForCheck();
+  }
+
+  private scrollToTop(): void {
+    if (this.contentAreaRef) {
+      this.contentAreaRef.nativeElement.scrollTop = 0;
     }
   }
-
-  getCopyrightNotice() {
-    let y = new Date().getFullYear();
-    return `© 2023${y === 2023 ? '' : ` - ${y}`}, Yegor Pelykh. All rights reserved. Copying without permission is prohibited.`;
-  }
-
 }

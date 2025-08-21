@@ -1,138 +1,133 @@
 :host {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
 .doc-section-title {
-    flex: 0 0 auto;
+  flex: 0 0 auto;
 }
 
 .cv-save-button {
-    flex: 0 0 auto;
-    display: block;
-    width: 150px;
-    margin-left: 1rem;
-    background-color: #18A558;
-    border-top: 1px solid #18A558;
-    border-left: 1px solid #18A558;
-    border-right: 1px solid #18A558;
-    border-bottom: 1px solid #116530;
-    color: #ffffff;
-    border-radius: 7px;
-    padding: .5rem;
-    transition: background-color 250ms;
+  flex: 0 0 auto;
+  display: block;
+  width: 150px;
+  margin-left: 1rem;
+  background-color: #18a558;
+  border: 1px solid #18a558;
+  color: #fff;
+  border-radius: 7px;
+  padding: 0.5rem;
+  transition: background-color 250ms;
 
-    &.hidden {
-        display: none;
-    }
+  &.hidden {
+    display: none;
+  }
 
-    &:hover {
-        background-color: #00661f;
-    }
+  &:hover {
+    background-color: #00661f;
+  }
 
-    &:disabled {
-        background-color: rgba(24, 165, 88, 0.5);
-        border-top: 1px solid rgba(24, 165, 88, 0.5);
-        border-left: 1px solid rgba(24, 165, 88, 0.5);
-        border-right: 1px solid rgba(24, 165, 88, 0.5);
-        border-bottom: 1px solid rgba(17, 101, 48, 0.5);
-    }
+  &:disabled {
+    background-color: rgba(24, 165, 88, 0.5);
+    border-color: rgba(24, 165, 88, 0.5);
+  }
 }
 
 .cv-auth-form {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    opacity: 1;
-    max-width: 800px;
-    max-height: 600px;
-    visibility: visible;
-    transition: margin-top 250ms, opacity 250ms, max-height 250ms, visibility 250ms;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  opacity: 1;
+  max-width: 800px;
+  max-height: 600px;
+  visibility: visible;
+  transition:
+    margin-top 250ms,
+    opacity 250ms,
+    max-height 250ms,
+    visibility 250ms;
 
-    .cv-auth-token-field {
-        flex: 0 0 auto;
-        border: 1px solid #cd951d;
-        border-radius: 7px;
-        margin-top: .5rem;
-        padding: .5rem;
-        text-align: center;
-        transition: border 250ms;
+  &.hidden {
+    margin-top: 0;
+    opacity: 0;
+    max-height: 0;
+    visibility: hidden;
+  }
+}
 
-        &:focus {
-            border: 1px solid #805400;
-        }
-    }
+.cv-auth-token-field {
+  border: 1px solid #cd951d;
+  border-radius: 7px;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  text-align: center;
+  transition: border 250ms;
 
-    .cv-auth-submit-row {
-      flex: 0 0 auto;
-      align-self: center;
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
+  &:focus {
+    border: 1px solid #805400;
+  }
+}
 
-      & .cv-auth-submit {
-        flex: 0 0 auto;
-        width: 150px;
-        background-color: #18A558;
-        border-top: 1px solid #18A558;
-        border-left: 1px solid #18A558;
-        border-right: 1px solid #18A558;
-        border-bottom: 1px solid #116530;
-        color: #ffffff;
-        border-radius: 7px;
-        padding: .5rem;
-        transition: background-color 250ms;
+.cv-auth-submit-row {
+  align-self: center;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 
-        &:hover {
-            background-color: #00661f;
-        }
+.cv-auth-submit {
+  width: 150px;
+  background-color: #18a558;
+  border: 1px solid #18a558;
+  color: #fff;
+  border-radius: 7px;
+  padding: 0.5rem;
+  transition: background-color 250ms;
 
-        &:disabled {
-            background-color: rgba(24, 165, 88, 0.5);
-            border-top: 1px solid rgba(24, 165, 88, 0.5);
-            border-left: 1px solid rgba(24, 165, 88, 0.5);
-            border-right: 1px solid rgba(24, 165, 88, 0.5);
-            border-bottom: 1px solid rgba(17, 101, 48, 0.5);
-        }
-      }
+  &:hover {
+    background-color: #00661f;
+  }
 
-      & .cv-auth-submit:not(:first-child) {
-        margin-left: 10px;
-      }
-    }
+  &:disabled {
+    background-color: rgba(24, 165, 88, 0.5);
+    border-color: rgba(24, 165, 88, 0.5);
+  }
 
-    &.hidden {
-        margin-top: 0;
-        opacity: 0;
-        max-height: 0;
-        visibility: hidden;
-    }
+  &:not(:first-child) {
+    margin-left: 10px;
+  }
 }
 
 .cv-auth-error {
-    flex: 0 0 auto;
-    display: block;
-    background-color: #ff1a1a;
-    color: white;
-    border-radius: 7px;
-    padding: 1rem;
-    margin-top: 1rem;
-    opacity: 1;
-    max-height: 4rem;
-    visibility: visible;
-    transition: margin-top 250ms, opacity 250ms, max-height 250ms, visibility 250ms;
+  background-color: #ff1a1a;
+  color: #fff;
+  border-radius: 7px;
+  padding: 1rem;
+  margin-top: 1rem;
+  opacity: 1;
+  max-height: 4rem;
+  visibility: visible;
+  transition:
+    margin-top 250ms,
+    opacity 250ms,
+    max-height 250ms,
+    visibility 250ms;
 
-    &.hidden {
-        margin-top: 0;
-        opacity: 0;
-        max-height: 0;
-        visibility: collapse;
-        transition: margin-top 0ms, opacity 0ms, max-height 0ms, visibility 0ms;
-    }
+  &.hidden {
+    margin-top: 0;
+    opacity: 0;
+    max-height: 0;
+    visibility: collapse;
+    transition:
+      margin-top 0ms,
+      opacity 0ms,
+      max-height 0ms,
+      visibility 0ms;
+  }
 }

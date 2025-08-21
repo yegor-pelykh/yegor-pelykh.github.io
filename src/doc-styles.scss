@@ -1,36 +1,48 @@
+$section-title-font-size: 2rem;
+$section-title-font-weight: bold;
+$section-title-padding-bottom: 0.4rem;
+$section-title-border: 1px solid;
+$section-title-margin-bottom: 0.8rem;
+$expander-margin: 0.75rem 0;
+$subheader-font-size: 1.2rem;
+$subheader-font-weight: bold;
+$subheader-padding: 0.2em 0;
+$paragraph-padding: 0.2rem 0;
+$list-marker-color: #007000;
+
 .doc-section-title {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 2rem;
-    font-weight: bold;
-    padding-bottom: .4rem;
-    border-bottom: 1px solid;
-    margin-bottom: .8rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: $section-title-font-size;
+  font-weight: $section-title-font-weight;
+  padding-bottom: $section-title-padding-bottom;
+  border-bottom: $section-title-border;
+  margin-bottom: $section-title-margin-bottom;
 }
 
 .doc-expander {
-    margin: .75rem 0;
+  margin: $expander-margin;
 }
 
 .doc-subheader {
-    display: block;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: .2em 0;
+  display: block;
+  font-size: $subheader-font-size;
+  font-weight: $subheader-font-weight;
+  padding: $subheader-padding;
 }
 
 .doc-paragraph {
-    padding: .2rem 0;
+  padding: $paragraph-padding;
 }
 
 .doc-list {
-    list-style-type: disc;
-    list-style-position: inside;
+  list-style-type: disc;
+  list-style-position: inside;
 
-    & > li::marker {
-        color: #007000;
-    }
+  > li::marker {
+    color: $list-marker-color;
+  }
 }

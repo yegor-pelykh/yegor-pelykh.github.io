@@ -1,68 +1,102 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+  ChangeDetectionStrategy
+} from '@angular/core';
+import { fromEvent, Subject, interval } from 'rxjs';
+import { takeUntil, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-background',
   templateUrl: './background.component.html',
-  styleUrls: ['./background.component.scss']
+  styleUrls: ['./background.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BackgroundComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
-  @ViewChild('backgroundCanvas')
-  private bgCanvas?: ElementRef<HTMLCanvasElement>;
-  private bgCanvasContext?: CanvasRenderingContext2D;
-  private bgTimeout?: NodeJS.Timeout;
-  private bgCanvasWidth: number = 0;
-  private bgCanvasHeight: number = 0;
+export class BackgroundComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('backgroundCanvas', { static: true })
+  public backgroundCanvasRef?: ElementRef<HTMLCanvasElement>;
 
-  private static letters = 'YEGORPLKHyegorplkh';
-  private static fontSize = 12;
-  private static backgroundColor = 'rgba(255,255,255,0.08)';
-  private static symbolColor = '#003200';
+  private readonly letters: string = 'YEGORPLKHyegorplkh';
+  private readonly fontSize: number = 12;
+  private readonly backgroundColor: string = 'rgba(255,255,255,0.08)';
+  private readonly symbolColor: string = '#003200';
 
-  reloadBackground() {
-    if (this.bgCanvas == null || this.bgCanvasContext == null)
-      return;
-    if (this.bgCanvas.nativeElement.offsetWidth == this.bgCanvasWidth && this.bgCanvas.nativeElement.offsetHeight == this.bgCanvasHeight)
-      return;
-    this.bgCanvasWidth = this.bgCanvas.nativeElement.offsetWidth;
-    this.bgCanvasHeight = this.bgCanvas.nativeElement.offsetHeight;
-    this.bgCanvas.nativeElement.width = this.bgCanvasWidth;
-    this.bgCanvas.nativeElement.height = this.bgCanvasHeight;
-    const columns = this.bgCanvasWidth / BackgroundComponent.fontSize;
-    let drops: number[] = [];
-    for (let i = 0; i < columns; i++) {
-      drops[i] = 1;
-    }
-    if (this.bgTimeout != null)
-      clearInterval(this.bgTimeout);
-    this.bgTimeout = setInterval(() => {
-      if (this.bgCanvasContext == null) return;
-      this.bgCanvasContext.fillStyle = BackgroundComponent.backgroundColor;
-      this.bgCanvasContext.fillRect(0, 0, this.bgCanvasWidth, this.bgCanvasHeight);
-      for (var i = 0; i < drops.length; i++) {
-        var text = BackgroundComponent.letters[Math.floor(Math.random() * BackgroundComponent.letters.length)];
-        this.bgCanvasContext.fillStyle = BackgroundComponent.symbolColor;
-        this.bgCanvasContext.fillText(text, i * BackgroundComponent.fontSize, drops[i] * BackgroundComponent.fontSize);
-        drops[i]++;
-        if (drops[i] * BackgroundComponent.fontSize > this.bgCanvasHeight && Math.random() > .95) {
-          drops[i] = 0;
-        }
-      }
-    }, 50);
-  }
+  private canvasContext?: CanvasRenderingContext2D;
+  private canvasWidth = 0;
+  private canvasHeight = 0;
+  private drops: number[] = [];
+  private destroy$ = new Subject<void>();
 
   ngAfterViewInit(): void {
-    this.bgCanvasContext = this.bgCanvas?.nativeElement.getContext('2d') ?? undefined;
-  }
-
-  ngAfterViewChecked(): void {
-    this.reloadBackground();
+    this.initCanvasContext();
+    this.handleResize();
+    this.startBackgroundAnimation();
   }
 
   ngOnDestroy(): void {
-    if (this.bgTimeout != null) {
-      clearInterval(this.bgTimeout);
-      this.bgTimeout = undefined;
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private initCanvasContext(): void {
+    if (this.backgroundCanvasRef) {
+      this.canvasContext = this.backgroundCanvasRef.nativeElement.getContext('2d') ?? undefined;
     }
   }
 
+  private handleResize(): void {
+    if (!this.backgroundCanvasRef) return;
+    fromEvent(window, 'resize')
+      .pipe(startWith(null), takeUntil(this.destroy$))
+      .subscribe(() => this.resizeCanvas());
+  }
+
+  private resizeCanvas(): void {
+    if (!this.backgroundCanvasRef) return;
+    const { offsetWidth, offsetHeight } = this.backgroundCanvasRef.nativeElement;
+    if (offsetWidth === this.canvasWidth && offsetHeight === this.canvasHeight) return;
+
+    this.canvasWidth = offsetWidth;
+    this.canvasHeight = offsetHeight;
+    this.backgroundCanvasRef.nativeElement.width = this.canvasWidth;
+    this.backgroundCanvasRef.nativeElement.height = this.canvasHeight;
+    this.initDrops();
+  }
+
+  private initDrops(): void {
+    const columns = Math.floor(this.canvasWidth / this.fontSize);
+    this.drops = Array.from({ length: columns }, () => 1);
+  }
+
+  private startBackgroundAnimation(): void {
+    interval(50)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.drawBackground());
+  }
+
+  private drawBackground(): void {
+    if (!this.canvasContext || !this.backgroundCanvasRef) return;
+    this.canvasContext.fillStyle = this.backgroundColor;
+    this.canvasContext.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+    for (let i = 0; i < this.drops.length; i++) {
+      const text = this.letters[Math.floor(Math.random() * this.letters.length)];
+      this.canvasContext.fillStyle = this.symbolColor;
+      this.canvasContext.fillText(
+        text,
+        i * this.fontSize,
+        this.drops[i] * this.fontSize
+      );
+      this.drops[i]++;
+      if (
+        this.drops[i] * this.fontSize > this.canvasHeight &&
+        Math.random() > 0.95
+      ) {
+        this.drops[i] = 0;
+      }
+    }
+  }
 }

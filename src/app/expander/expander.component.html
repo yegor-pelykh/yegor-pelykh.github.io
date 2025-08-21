@@ -1,7 +1,7 @@
-<input id="{{inputId}}" class="toggle" type="checkbox">
-<label for="{{inputId}}" class="label-toggle">{{header}}</label>
+<input [id]="inputId" class="toggle" type="checkbox">
+<label [for]="inputId" class="label-toggle">{{ header }}</label>
 <div class="collapsible-content">
-    <div class="content-inner">
-        <ng-content></ng-content>
-    </div>
+  <div class="content-inner">
+    <ng-content></ng-content>
+  </div>
 </div>

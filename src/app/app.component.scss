@@ -2,16 +2,6 @@ $scrollbar-width: 5px;
 $scrollbar-color: #264348;
 $scrollbar-color-hover: #719096;
 $mask-height: 50px;
-$mask-image-content: linear-gradient(
-  to bottom,
-  transparent,
-  black $mask-height,
-  black calc(100% - $mask-height),
-  transparent
-);
-$mask-size-content: calc(100% - ($scrollbar-width + 3px)) 100%;
-$mask-image-scrollbar: linear-gradient(black, black);
-$mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
 
 :host {
   display: block;
@@ -40,27 +30,19 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
   flex-wrap: wrap;
   z-index: 2;
 
-  & > .name-container-stub {
+  .name-container-stub {
     flex: 0 0 auto;
     width: 310px;
     height: 90px;
   }
 
-  & > .nav-bar {
+  .nav-bar {
     flex: 0 0 auto;
     display: flex;
     flex-direction: row;
     margin-right: 20px;
 
-    @for $i from 1 through 4 {
-      & > :nth-child(#{$i}n) {
-        transition: transform 125ms #{($i - 1) * 125 + 200}ms,
-          opacity 125ms #{($i - 1) * 125 + 200}ms, color 250ms 0ms,
-          text-decoration-color 250ms 0ms;
-      }
-    }
-
-    & > .nav-bar-item {
+    .nav-bar-item {
       flex: 0 0 auto;
       width: 100px;
       height: 90px;
@@ -69,7 +51,7 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
       justify-content: center;
       text-decoration: none;
       filter: drop-shadow(0.5px 0.5px 0px rgba(0, 0, 0, 0.75));
-      color: #000000;
+      color: #000;
       text-decoration-color: transparent;
       user-select: none;
       cursor: pointer;
@@ -78,10 +60,9 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
       opacity: 1;
       font-weight: bold;
       font-size: 20px;
-
-      &::before {
-        content: none;
-      }
+      transition:
+        color 250ms,
+        text-decoration-color 250ms;
 
       &:hover {
         color: #8e0505;
@@ -95,11 +76,21 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
         text-underline-offset: 10px;
       }
     }
+
+    @for $i from 1 through 4 {
+      .nav-bar-item:nth-child(#{$i}) {
+        transition:
+          transform 125ms #{($i - 1) * 125 + 200}ms,
+          opacity 125ms #{($i - 1) * 125 + 200}ms,
+          color 250ms,
+          text-decoration-color 250ms;
+      }
+    }
   }
 
   &.presentation {
-    & > .nav-bar {
-      & > .nav-bar-item {
+    .nav-bar {
+      .nav-bar-item {
         transform: translate(0, -200%);
         opacity: 0;
       }
@@ -119,32 +110,43 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: $scrollbar-color transparent;
-  mask-image: $mask-image-content, $mask-image-scrollbar;
-  mask-size: $mask-size-content, $mask-size-scrollbar;
-  mask-position: 0 0, 100% 0;
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent,
+      black $mask-height,
+      black calc(100% - #{$mask-height}),
+      transparent
+    ),
+    linear-gradient(black, black);
+  mask-size:
+    calc(100% - (#{$scrollbar-width} + 3px)) 100%,
+    (#{$scrollbar-width} + 3px) 100%;
+  mask-position:
+    0 0,
+    100% 0;
   mask-repeat: no-repeat, no-repeat;
   transform: translate(0, 0);
   opacity: 1;
-  transition: transform 500ms 200ms, opacity 500ms 200ms;
+  transition:
+    transform 500ms 200ms,
+    opacity 500ms 200ms;
 
   &::-webkit-scrollbar {
     width: $scrollbar-width;
   }
-
   &::-webkit-scrollbar-track {
     background-color: transparent;
   }
-
   &::-webkit-scrollbar-thumb {
     background-color: $scrollbar-color;
     border-radius: 9999px;
   }
-
   &::-webkit-scrollbar-thumb:hover {
     background: $scrollbar-color-hover;
   }
 
-  & > .content-sheet {
+  .content-sheet {
     flex: 0 0 auto;
     position: relative;
     display: flex;
@@ -175,7 +177,7 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
   z-index: 2;
   font-size: 11px;
   padding: 8px;
-  text-shadow: 1px 1px 1px #ffffff;
+  text-shadow: 1px 1px 1px #fff;
 }
 
 .name-container {
@@ -189,28 +191,29 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: width 500ms 200ms, height 500ms 200ms;
+  transition:
+    width 500ms 200ms,
+    height 500ms 200ms;
 
-  & > .name-block {
+  .name-block {
     flex: 0 0 auto;
     position: fixed;
     display: block;
     user-select: none;
-    background: #e93000;
-    background-image: linear-gradient(180deg, #ff8569 0%, #8e0505 50%);
+    background: linear-gradient(180deg, #ff8569 0%, #8e0505 50%);
     background-size: 100% 200%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    -moz-background-clip: text;
-    -moz-text-fill-color: transparent;
-    font-family: "Tektur", sans-serif;
+    font-family: 'Tektur', sans-serif;
     font-weight: bold;
     font-size: 40px;
     text-align: center;
     filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.5));
     animation: glitch 5s linear infinite;
-    transition: font-size 500ms 200ms, filter 500ms 200ms,
+    transition:
+      font-size 500ms 200ms,
+      filter 500ms 200ms,
       background-position 500ms;
 
     &:before,
@@ -219,27 +222,22 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
       position: absolute;
       left: 0;
       top: 0;
-      background: #e93000;
-      background-image: linear-gradient(180deg, #ff8569 0%, #8e0505 50%);
+      background: linear-gradient(180deg, #ff8569 0%, #8e0505 50%);
       background-size: 100% 200%;
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      -moz-background-clip: text;
-      -moz-text-fill-color: transparent;
       transition: background-position 500ms;
     }
 
     &:before {
       animation: glitchTop 3s linear infinite;
       clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-      -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
     }
 
     &:after {
       animation: glitchBottom 2s linear infinite;
       clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
-      -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
     }
 
     &:hover {
@@ -252,7 +250,7 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
     }
   }
 
-  & > .presentation-tooltip {
+  .presentation-tooltip {
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -262,36 +260,37 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
     width: 220px;
     height: 50px;
     opacity: 0;
-    font-family: "Tektur", sans-serif;
+    font-family: 'Tektur', sans-serif;
     font-size: 16px;
     user-select: none;
     text-align: center;
     background: #8e0505;
-    background-image: #8e0505;
     background-size: 100% 200%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    -moz-background-clip: text;
-    -moz-text-fill-color: transparent;
     filter: drop-shadow(3px 3px 2px rgba(255, 255, 255, 0.9));
     animation: glitch 5s linear infinite;
-    transition: top 200ms, opacity 200ms;
+    transition:
+      top 200ms,
+      opacity 200ms;
   }
 
   &.presentation {
     width: 100%;
     height: 100%;
 
-    & > .name-block {
+    .name-block {
       font-size: clamp(30px, 12vw, 55vh);
       filter: drop-shadow(5px 10px 5px rgba(40, 0, 0, 0.8));
     }
 
-    & > .presentation-tooltip {
+    .presentation-tooltip {
       opacity: 1;
       top: 5%;
-      transition: top 200ms 500ms, opacity 200ms 500ms;
+      transition:
+        top 200ms 500ms,
+        opacity 200ms 500ms;
     }
   }
 }
@@ -301,12 +300,10 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
   64% {
     transform: translate(1px, 0) skew(0deg);
   }
-
   4%,
   60% {
     transform: translate(-1px, 0) skew(0deg);
   }
-
   62% {
     transform: translate(0, 0) skew(5deg);
   }
@@ -317,12 +314,10 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
   64% {
     transform: translate(1px, -1px);
   }
-
   4%,
   60% {
     transform: translate(-1px, 1px);
   }
-
   62% {
     transform: translate(13px, -1px) skew(-13deg);
   }
@@ -333,12 +328,10 @@ $mask-size-scrollbar: ($scrollbar-width + 3px) 100%;
   64% {
     transform: translate(-1px, 0);
   }
-
   4%,
   60% {
     transform: translate(-1px, 0);
   }
-
   62% {
     transform: translate(-22px, 5px) skew(21deg);
   }

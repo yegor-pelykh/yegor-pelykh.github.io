@@ -1,112 +1,165 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Buffer } from 'buffer';
-import { Component, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, OnDestroy, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { exportNode, StyleTransferMode } from 'dom-node-export';
-import { Helpers } from '../helpers';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NgClass } from '@angular/common';
+import { Subject, firstValueFrom } from 'rxjs';
+import { Buffer } from 'buffer';
+import { exportNode, StyleTransferMode } from 'dom-node-export';
+import { HelpersUtil } from '../helpers';
 import { ContentProjectorComponent } from '../content-projector/content-projector.component';
 
-// My server address for processing elementary security tokens.
-const elsecServerAddress = 'https://elsec.fly.dev';
+const ELSEC_SERVER_URL = 'https://elsec.fly.dev';
+const EXPORT_DELAY_MS = 500;
 
 @Component({
   selector: 'app-resume',
+  standalone: true,
   imports: [
     ContentProjectorComponent,
     NgClass,
     ReactiveFormsModule,
   ],
   templateUrl: './resume.component.html',
-  styleUrls: ['./resume.component.scss']
+  styleUrls: ['./resume.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResumeComponent {
-  isAuthenticated: boolean = false;
-  errorMessage: string = '';
-  authForm = new FormGroup({
-    authToken: new FormControl('', [
+export class ResumeComponent implements OnDestroy {
+  readonly isAuthenticated = signal(false);
+  readonly isRequesting = signal(false);
+  readonly isForceExpanded = signal(false);
+  readonly isSaving = signal(false);
+  readonly errorMessage = signal('');
+  readonly cvContent = signal('');
+  readonly authForm = new FormGroup({
+    authToken: new FormControl<string>('', [
       Validators.required,
-      Validators.minLength(32)
+      Validators.minLength(32),
     ]),
   });
-  isRequesting: boolean = false;
-  isForceExpanded: boolean = false;
-  cvContent: string = '';
-  isSaving: boolean = false;
 
-  constructor(
-    private elRef: ElementRef,
-    private http: HttpClient
-  ) { }
+  private readonly destroy$ = new Subject<void>();
+  private readonly http = inject(HttpClient);
+  private readonly elRef = inject(ElementRef);
 
-  submitAuth(event: SubmitEvent) {
-    const token = this.authForm.value.authToken;
-    if (typeof token !== 'string') {
-      return;
-    }
-    const submitter = event.submitter;
-    if (submitter === null) {
-      return;
-    }
-    const value = (<any>submitter).value as string;
-    this.requestCV(token, value);
+  async submitAuth(event: SubmitEvent): Promise<void> {
+    event.preventDefault();
+    if (!this.isAuthFormValid()) return;
+
+    const token = this.authForm.value.authToken!;
+    const lang = (event.submitter as HTMLButtonElement)?.value;
+
+    if (!lang) return;
+    await this.loadResume(token, lang);
   }
 
-  requestCV(token: string, lang: string) {
-    this.isRequesting = true;
-    this.http.get(`assets/data/cv-${lang}.bin`, { responseType: 'arraybuffer' }).subscribe({
-      next: data => {
-        const dataToDecrypt = Buffer.from(data).toString('base64');
-        this.http.post<any>(`${elsecServerAddress}/c/dec`, {
-          token: token,
-          data: dataToDecrypt,
-        }).subscribe({
-          next: data => this.onCVReceived(data),
-          error: error => this.onCVRequestError(error),
-        });
-      },
-      error: error => this.onCVRequestError(error),
-    });
-  }
-
-  onCVReceived(data: any) {
-    this.isRequesting = false;
-    if ('res' in data) {
-      this.isAuthenticated = true;
-      this.cvContent = Buffer.from(data.res as string, 'base64').toString();
-    } else if ('msg' in data) {
-      this.isAuthenticated = false;
-      this.cvContent = '';
-      this.errorMessage = data.msg;
-    }
-  }
-
-  onCVRequestError(response: HttpErrorResponse) {
-    this.isRequesting = false;
-    if (response.status !== 200) {
-      this.isAuthenticated = false;
-      this.cvContent = '';
-      if ('msg' in response.error) {
-        this.errorMessage = response.error.msg;
-      } else {
-        this.errorMessage = 'Error requesting Resume data.';
-      }
-    }
-  }
-
-  getAge(birthDay: number, birthMonth: number, birthYear: number) {
-    let birthDate = new Date(birthYear, birthMonth - 1, birthDay);
-    let today = new Date();
+  getAge(birthDay: number, birthMonth: number, birthYear: number): number {
+    const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
+    const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
-    let m = today.getMonth() - birthDate.getMonth();
+
+    const m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
+
     return age;
   }
 
-  downloadFile(dataUrl: string, title: string) {
-    const a = document.createElement('a') as HTMLAnchorElement;
+  async saveToFile(): Promise<void> {
+    this.isForceExpanded.set(true);
+    this.isSaving.set(true);
+
+    setTimeout(async () => {
+      this.isForceExpanded.set(false);
+      const node = this.elRef.nativeElement;
+
+      const dataUrl = await this.generateExportData(node);
+      if (dataUrl) {
+        this.downloadFile(dataUrl, 'Yegor Pelykh - Resume');
+      }
+
+      this.isSaving.set(false);
+    }, EXPORT_DELAY_MS);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private async generateExportData(node: HTMLElement): Promise<string | null> {
+    return exportNode(node, {
+      docFaviconUrl: HelpersUtil.cvFavicon,
+      docTitle: 'Yegor Pelykh - Resume',
+      styleTransferMode: StyleTransferMode.declared,
+      styles: { body: { padding: '2rem' } },
+      filter: (n: HTMLElement) =>
+        !n.classList?.contains('cv-save-button') &&
+        !n.classList?.contains('cv-auth-form'),
+    });
+  }
+
+  private async loadResume(token: string, lang: string): Promise<void> {
+    this.isRequesting.set(true);
+    this.errorMessage.set('');
+
+    try {
+      const arrayBuffer = await this.fetchResumeData(lang);
+      const dataToDecrypt = Buffer.from(arrayBuffer).toString('base64');
+      const response = await this.decryptResumeData(token, dataToDecrypt);
+      this.handleResumeResponse(response);
+    } catch (error) {
+      this.handleResumeError(error);
+    } finally {
+      this.isRequesting.set(false);
+    }
+  }
+
+  private async fetchResumeData(lang: string): Promise<ArrayBuffer> {
+    return firstValueFrom(
+      this.http.get<ArrayBuffer>(`assets/data/cv-${lang}.bin`, {
+        responseType: 'arraybuffer' as 'json'
+      })
+    );
+  }
+
+  private async decryptResumeData(token: string, data: string): Promise<{ res?: string; msg?: string }> {
+    return firstValueFrom(
+      this.http.post<{ res?: string; msg?: string }>(
+        `${ELSEC_SERVER_URL}/c/dec`,
+        { token, data }
+      )
+    );
+  }
+
+  private handleResumeResponse(response: { res?: string; msg?: string }): void {
+    if (response.res) {
+      this.isAuthenticated.set(true);
+      this.cvContent.set(Buffer.from(response.res, 'base64').toString());
+      this.errorMessage.set('');
+    } else {
+      this.resetState();
+      this.errorMessage.set(response.msg ?? 'Unknown error');
+    }
+  }
+
+  private handleResumeError(error: unknown): void {
+    this.resetState();
+
+    if (error instanceof HttpErrorResponse && error.error?.msg) {
+      this.errorMessage.set(error.error.msg);
+    } else {
+      this.errorMessage.set('Error requesting Resume data.');
+    }
+  }
+
+  private resetState(): void {
+    this.isAuthenticated.set(false);
+    this.cvContent.set('');
+  }
+
+  private downloadFile(dataUrl: string, title: string): void {
+    const a = document.createElement('a');
     a.href = dataUrl;
     a.download = title;
     document.body.appendChild(a);
@@ -114,31 +167,7 @@ export class ResumeComponent {
     document.body.removeChild(a);
   }
 
-  async saveToFile() {
-    this.isForceExpanded = true;
-    this.isSaving = true;
-    setTimeout(async () => {
-      if (this.elRef?.nativeElement != null) {
-        const node = this.elRef.nativeElement;
-        this.isForceExpanded = false;
-        const dataUrl = await exportNode(node, {
-          docFaviconUrl: Helpers.cvFavicon,
-          docTitle: 'Yegor Pelykh - Resume',
-          styleTransferMode: StyleTransferMode.declared,
-          styles: {
-            body: {
-              padding: '2rem'
-            }
-          },
-          filter: node => !node.classList?.contains('cv-save-button') &&
-            !node.classList?.contains('cv-auth-form'),
-        });
-        if (dataUrl != null) {
-          this.downloadFile(dataUrl, 'Yegor Pelykh - Resume');
-          this.isSaving = false;
-        }
-      }
-    }, 500);
+  private isAuthFormValid(): boolean {
+    return this.authForm.valid && !!this.authForm.value.authToken;
   }
-
 }
