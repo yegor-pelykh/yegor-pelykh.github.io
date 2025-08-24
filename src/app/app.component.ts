@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   OnDestroy,
   Renderer2,
   ViewChild
@@ -62,12 +63,14 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  @HostListener('window:wheel', ['$event'])
   public onWheel(event: WheelEvent): void {
     if (this.presentationMode && event.deltaY > 0) {
       this.disablePresentationMode();
     }
   }
 
+  @HostListener('document:keydown', ['$event'])
   public onKeyDown(event: KeyboardEvent): void {
     if (this.presentationMode && event.key === 'ArrowDown') {
       this.disablePresentationMode();
