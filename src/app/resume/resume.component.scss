@@ -1,0 +1,227 @@
+:host {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: var(--max-width-section);
+  width: calc(100% - 64px);
+}
+
+@media (max-width: 1200px) {
+  :host {
+    max-width: 98vw;
+    width: 100%;
+  }
+}
+
+.resume-section {
+  width: 100%;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  backdrop-filter: none;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--mat-sys-primary);
+  margin-bottom: var(--gap-lg);
+}
+
+.intro {
+  color: var(--mat-sys-on-surface);
+  margin-bottom: var(--gap-lg);
+  font-size: 1.1rem;
+}
+
+.resume-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-md);
+  align-items: stretch;
+}
+
+.token-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  align-items: stretch;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.token-field {
+  width: 100%;
+  max-width: 600px;
+  align-self: center;
+}
+
+.token-field .token-input {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-align: center;
+  width: 100%;
+  min-width: 32ch;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 12px 8px;
+  background: transparent;
+}
+
+.token-field .mat-form-field-infix {
+  width: 100%;
+}
+
+.token-field .mat-error {
+  font-size: 0.95em;
+  text-align: center;
+  width: 100%;
+}
+
+.resume-buttons {
+  display: flex;
+  gap: var(--gap-md);
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.resume-buttons button[mat-raised-button] {
+  min-width: 180px;
+  font-size: 1rem;
+  font-weight: var(--font-weight-medium);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.resume-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  color: var(--mat-sys-error, #d32f2f);
+  font-size: 1.05em;
+  justify-content: center;
+  margin-top: var(--gap-sm);
+}
+
+.resume-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: var(--gap-sm);
+}
+
+.resume-content {
+  margin-top: var(--gap-lg);
+  width: 100%;
+  align-self: center;
+  background: var(--mat-sys-surface-container-low, #fff);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--gap-lg);
+  line-height: 1.6;
+  color: var(--mat-sys-on-surface, #222);
+  word-break: break-word;
+}
+
+.resume-content h1,
+.resume-content h2,
+.resume-content h3,
+.resume-content h4,
+.resume-content h5,
+.resume-content h6 {
+  font-family: var(--font-main);
+  font-weight: var(--font-weight-bold);
+  color: var(--mat-sys-primary, #1976d2);
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+.resume-content ul,
+.resume-content ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.resume-content ul li,
+.resume-content ol li {
+  margin-bottom: 0.3em;
+  font-size: 1em;
+}
+
+.resume-content a {
+  color: var(--mat-sys-primary);
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.resume-content a:hover,
+.resume-content a:focus {
+  color: var(--mat-sys-secondary);
+}
+
+.resume-content strong {
+  font-weight: var(--font-weight-bold);
+  color: var(--mat-sys-primary);
+}
+
+.resume-content .custom-skill-title {
+  font-weight: var(--font-weight-bold);
+  display: block;
+  margin-bottom: 0.2em;
+  color: var(--mat-sys-primary);
+}
+
+@media (max-width: 700px) {
+  .resume-content {
+    padding: var(--gap-md);
+  }
+
+  .token-field {
+    max-width: 100vw;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .intro {
+    font-size: 1rem;
+  }
+}
+
+.resume-save-btn {
+  display: flex;
+  justify-content: end;
+  margin-top: var(--gap-sm);
+  margin-bottom: var(--gap-lg);
+}
+
+.resume-save-btn button[mat-raised-button] {
+  min-width: 200px;
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-medium);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 700px) {
+  .resume-save-btn {
+    margin-top: var(--gap-md);
+    margin-bottom: var(--gap-md);
+  }
+
+  .resume-save-btn button[mat-raised-button] {
+    min-width: 140px;
+    font-size: 0.98rem;
+  }
+}

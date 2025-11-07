@@ -1,0 +1,39 @@
+<app-content-panel>
+  <section class="welcome-section" aria-labelledby="welcome-title">
+    <div class="avatar-glass">
+      <img src="avatar.png" [attr.alt]="'aria.avatar_photo' | translate" class="avatar" />
+    </div>
+    <h1 class="name" id="welcome-title">{{ 'welcome.name' | translate }}</h1>
+    <p class="desc">{{ 'welcome.desc1' | translate }}</p>
+    <p class="desc">{{ 'welcome.desc2' | translate }}</p>
+    <div class="hero-buttons">
+      <button mat-raised-button color="primary" (click)="goto('projects')"
+        aria-label="{{ 'welcome.projects' | translate }}">
+        <mat-icon aria-hidden="true">folder</mat-icon>
+        {{ 'welcome.projects' | translate }}
+      </button>
+      <button mat-raised-button color="accent" (click)="goto('resume')" aria-label="{{ 'welcome.resume' | translate }}">
+        <mat-icon aria-hidden="true">description</mat-icon>
+        {{ 'welcome.resume' | translate }}
+      </button>
+      <button mat-raised-button color="secondary" (click)="goto('contacts')"
+        aria-label="{{ 'welcome.contacts' | translate }}">
+        <mat-icon aria-hidden="true">alternate_email</mat-icon>
+        {{ 'welcome.contacts' | translate }}
+      </button>
+    </div>
+    <div class="skills-section">
+      <div class="skills-title">
+        {{ 'welcome.skills' | translate }}
+      </div>
+      <mat-chip-set class="skills-chips" [attr.aria-label]="'aria.skills' | translate">
+        @for (tech of techStack(); track tech) {
+        <mat-chip color="primary" selected>
+          <mat-icon matChipAvatar aria-hidden="true">{{ tech.icon }}</mat-icon>
+          {{ tech.label }}
+        </mat-chip>
+        }
+      </mat-chip-set>
+    </div>
+  </section>
+</app-content-panel>

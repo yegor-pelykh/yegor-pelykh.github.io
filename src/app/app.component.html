@@ -1,0 +1,6 @@
+<app-background></app-background>
+<div class="app-root" role="main" tabindex="-1" [attr.aria-label]="'ARIA.MAIN_CONTENT' | translate">
+  <app-header></app-header>
+  <router-outlet></router-outlet>
+</div>
+<app-copy-warning [visible]="copyWarningVisible()"></app-copy-warning>

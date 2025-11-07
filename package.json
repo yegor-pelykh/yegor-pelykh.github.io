@@ -1,0 +1,78 @@
+{
+  "name": "yegor-pelykh.github.io",
+  "version": "1.0.0",
+  "description": "My personal portfolio page.",
+  "type": "module",
+  "author": "Yegor Pelykh <yegor.dev@gmail.com>",
+  "private": true,
+  "homepage": "https://yegor-pelykh.github.io/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yegor-pelykh/yegor-pelykh.github.io"
+  },
+  "bugs": {
+    "url": "https://github.com/yegor-pelykh/yegor-pelykh.github.io/issues"
+  },
+  "keywords": [
+    "angular",
+    "portfolio",
+    "yegor-pelykh",
+    "web",
+    "pwa",
+    "material",
+    "ngx-translate",
+    "ngx-markdown",
+    "typescript",
+    "scss"
+  ],
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "sitemap": "node \"sitemap/generate-sitemap.js\"",
+    "build": "ng build --configuration production && npm run sitemap",
+    "build:dev": "ng build --configuration development",
+    "format": "prettier --write \"src/**/*.{ts,js,scss,html,json,md}\""
+  },
+  "dependencies": {
+    "@angular/cdk": "^20.2.12",
+    "@angular/common": "^20.3.10",
+    "@angular/compiler": "^20.3.10",
+    "@angular/core": "^20.3.10",
+    "@angular/forms": "^20.3.10",
+    "@angular/material": "^20.2.12",
+    "@angular/platform-browser": "^20.3.10",
+    "@angular/router": "^20.3.10",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
+    "dom-node-export": "^2.0.0",
+    "marked": "^16.4.2",
+    "ngx-markdown": "^20.1.0",
+    "rxjs": "~7.8.2",
+    "tslib": "^2.8.1",
+    "zone.js": "~0.15.1"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.3.9",
+    "@angular/cli": "^20.3.9",
+    "@angular/compiler-cli": "^20.3.10",
+    "@angular/localize": "^20.3.10",
+    "@types/jasmine": "~5.1.12",
+    "@types/node": "^24.10.0",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "jasmine-core": "~5.12.1",
+    "karma": "~6.4.4",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.1",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

@@ -1,0 +1,54 @@
+:root {
+  --radius-lg: 2rem;
+  --radius-md: 1.2rem;
+  --radius-sm: 0.5rem;
+
+  --padding-lg: 2rem;
+  --padding-md: 1.5rem;
+  --padding-sm: 1rem;
+  --padding-xs: 0.5rem;
+
+  --padding-percent-lg: 10%;
+
+  --max-width-section: 1100px;
+  --max-width-header: 1100px;
+
+  --avatar-lg: 128px;
+  --avatar-md: 112px;
+  --avatar-sm: 96px;
+  --avatar-xs: 80px;
+
+  --shadow-lg: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  --shadow-md: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
+  --shadow-xs: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
+
+  --header-padding-horizontal: 32px;
+  --header-padding-mobile: 24px;
+  --header-height: 80px;
+  --header-height-mobile: 64px;
+  --header-sections-gap: 16px;
+  --header-sections-gap-mobile: 4px;
+  --header-title-font-size: 1.5rem;
+  --header-title-max-width: 100px;
+  --header-actions-gap: 8px;
+  --header-mobile-bottom-padding: 8px;
+  --header-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 900;
+
+  --glass-blur: 12px;
+  --glass-background: rgba(255, 255, 255, 0.18);
+  --glass-background-notification: rgba(255, 255, 255, 0.54);
+
+  --font-main: 'Tektur', 'Open Sans', Arial, sans-serif;
+  --font-mono: 'Fira Mono', 'Consolas', monospace;
+  --font-size: 16px;
+
+  --gap-lg: 1.5rem;
+  --gap-md: 1rem;
+  --gap-sm: 0.5rem;
+}

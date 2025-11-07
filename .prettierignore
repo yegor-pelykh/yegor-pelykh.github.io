@@ -1,0 +1,9 @@
+node_modules
+docs
+out-tsc
+coverage
+public
+*.svg
+*.png
+*.jpg
+*.ico

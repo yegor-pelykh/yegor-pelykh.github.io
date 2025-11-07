@@ -1,0 +1,68 @@
+<app-content-panel>
+  <section class="resume-section" aria-labelledby="resume-title">
+    <h2 class="section-title" id="resume-title">{{ 'resume.title' | translate }}</h2>
+    <p class="intro">{{ 'resume.intro1' | translate }}</p>
+    <p class="intro" [innerHTML]="'resume.intro2' | translate"></p>
+    <p class="intro">{{ 'resume.intro3' | translate }}</p>
+    <div class="resume-list">
+      <form class="token-form" [formGroup]="authForm" (ngSubmit)="submitAuth($event)" autocomplete="off"
+        [attr.aria-label]="'aria.resume_auth_form' | translate">
+        <mat-form-field appearance="outline" class="token-field" floatLabel="always">
+          <mat-label>{{ 'resume.token' | translate }}</mat-label>
+          <input matInput class="token-input" formControlName="authToken" maxlength="32" autocomplete="off"
+            [attr.aria-label]="'resume.token' | translate" [readonly]="loading()"
+            [class.invalid]="authForm.get('authToken')?.invalid && (authForm.get('authToken')?.dirty || authForm.get('authToken')?.touched)" />
+          @if (authForm.get('authToken')?.invalid && (authForm.get('authToken')?.dirty ||
+          authForm.get('authToken')?.touched)) {
+          <mat-error>
+            {{ 'resume.token_error' | translate }}
+          </mat-error>
+          }
+        </mat-form-field>
+        <div class="resume-buttons">
+          <div class="resume-buttons">
+            <button mat-raised-button color="secondary" type="submit" value="uk"
+              [disabled]="loading() || !authForm.valid" [attr.aria-label]="'resume.unlock_uk' | translate">
+              <mat-icon aria-hidden="true">description</mat-icon>
+              {{ 'resume.unlock_uk' | translate }}
+            </button>
+            <button mat-raised-button color="primary" type="submit" value="ru" [disabled]="loading() || !authForm.valid"
+              [attr.aria-label]="'resume.unlock_ru' | translate">
+              <mat-icon aria-hidden="true">description</mat-icon>
+              {{ 'resume.unlock_ru' | translate }}
+            </button>
+            <button mat-raised-button color="accent" type="submit" value="en" [disabled]="loading() || !authForm.valid"
+              [attr.aria-label]="'resume.unlock_en' | translate">
+              <mat-icon aria-hidden="true">description</mat-icon>
+              {{ 'resume.unlock_en' | translate }}
+            </button>
+          </div>
+        </div>
+        @if (errorMsg()) {
+        <div class="resume-error" role="alert" aria-live="polite">
+          <mat-icon color="warn" aria-hidden="true">error</mat-icon>
+          <span>{{ errorMsg() }}</span>
+        </div>
+        }
+        @if (loading()) {
+        <div class="resume-loading" aria-live="polite">
+          <mat-progress-spinner diameter="32" mode="indeterminate"></mat-progress-spinner>
+        </div>
+        }
+      </form>
+      @if (cvContent()) {
+      <div #resumeContentRef class="resume-content">
+        <markdown [data]="cvContent()"></markdown>
+      </div>
+      }
+    </div>
+    @if (cvContent()) {
+    <div class="resume-save-btn">
+      <button mat-raised-button color="primary" (click)="saveResume()" [attr.aria-label]="'resume.save' | translate">
+        <mat-icon aria-hidden="true">download</mat-icon>
+        {{ 'resume.save' | translate }}
+      </button>
+    </div>
+    }
+  </section>
+</app-content-panel>

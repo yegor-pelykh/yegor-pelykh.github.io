@@ -1,0 +1,63 @@
+<ng-container>
+  @if (!isMobile()) {
+  <header class="header-row" role="banner">
+    <a class="site-title" [routerLink]="['/']" tabindex="0" id="site-title"
+      [attr.aria-label]="'aria.go_to_home' | translate">
+      {{ siteTitle }}
+    </a>
+    <nav class="sections" aria-label="Main navigation">
+      @for (section of sectionKeys; track section) {
+      <button mat-button [routerLink]="section.path" class="section-button"
+        [attr.aria-current]="isActive(section.path) ? 'page' : null" [attr.aria-label]="section.title | translate">
+        {{ section.title | translate }}
+      </button>
+      }
+    </nav>
+    <div class="actions">
+      <button mat-icon-button class="round-btn" [matMenuTriggerFor]="langMenu"
+        [matTooltip]="'aria.change_language' | translate" [attr.aria-label]="'aria.change_language' | translate">
+        <span aria-hidden="true">{{ getCurrentLanguage()?.flag }}</span>
+      </button>
+      <mat-menu #langMenu="matMenu" [attr.aria-label]="'aria.language_selection' | translate">
+        @for (lang of languages; track lang.code) {
+        <button mat-menu-item (click)="selectLanguage(lang.code)" [attr.aria-checked]="lang.code === language()"
+          role="menuitemradio">
+          <span style="margin-right: 8px;" aria-hidden="true">{{ lang.flag }}</span>
+          {{ lang.label }}
+        </button>
+        }
+      </mat-menu>
+    </div>
+  </header>
+  } @else {
+  <header class="header-row mobile-top" role="banner">
+    <a class="site-title" [routerLink]="['/']" tabindex="0" id="site-title"
+      [attr.aria-label]="'aria.go_to_home' | translate">
+      {{ siteTitle }}
+    </a>
+    <div class="actions">
+      <button mat-icon-button class="round-btn" [matMenuTriggerFor]="langMenu"
+        [matTooltip]="'aria.change_language' | translate" [attr.aria-label]="'aria.change_language' | translate">
+        <span aria-hidden="true">{{ getCurrentLanguage()?.flag }}</span>
+      </button>
+      <mat-menu #langMenu="matMenu" [attr.aria-label]="'aria.language_selection' | translate">
+        @for (lang of languages; track lang.code) {
+        <button mat-menu-item (click)="selectLanguage(lang.code)" [attr.aria-checked]="lang.code === language()"
+          role="menuitemradio">
+          <span style="margin-right: 8px;" aria-hidden="true">{{ lang.flag }}</span>
+          {{ lang.label }}
+        </button>
+        }
+      </mat-menu>
+    </div>
+  </header>
+  <nav class="sections mobile-bottom" aria-label="Main navigation">
+    @for (section of sectionKeys; track section) {
+    <button mat-button [routerLink]="section.path" class="section-button"
+      [attr.aria-current]="isActive(section.path) ? 'page' : null" [attr.aria-label]="section.title | translate">
+      {{ section.title | translate }}
+    </button>
+    }
+  </nav>
+  }
+</ng-container>

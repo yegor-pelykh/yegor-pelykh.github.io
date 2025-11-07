@@ -1,0 +1,45 @@
+<app-content-panel>
+  <section class="projects-section" aria-labelledby="projects-title">
+    <h2 class="section-title" id="projects-title">{{ 'projects.title' | translate }}</h2>
+    <p class="intro">{{ 'projects.intro1' | translate }}</p>
+    <p class="intro">{{ 'projects.intro2' | translate }}</p>
+    <p class="intro">{{ 'projects.intro3' | translate }}</p>
+    <div class="projects-list" role="list">
+      @for (project of projects(); track project.id) {
+      <mat-expansion-panel role="listitem">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ project.title }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="expander-content">
+          <div class="expander-row">
+            <span class="expander-subtitle">{{ 'projects.description' | translate }}</span>
+            <span>{{ project.description }}</span>
+          </div>
+          <div class="expander-row">
+            <span class="expander-subtitle">{{ 'projects.languages' | translate }}</span>
+            <span>{{ project.languages.join(', ') }}</span>
+          </div>
+          <div class="expander-row">
+            <span class="expander-subtitle">{{ 'projects.frameworks' | translate }}</span>
+            <span>{{ project.frameworks.join(', ') }}</span>
+          </div>
+          <div class="expander-row">
+            <span class="expander-subtitle">{{ 'projects.links' | translate }}</span>
+            <span>
+              @for (link of project.links; track link.url) {
+              <a mat-button color="primary" [href]="link.url" target="_blank" rel="noopener"
+                [attr.aria-label]="link.label | translate">
+                <mat-icon aria-hidden="true">{{ link.icon }}</mat-icon>
+                {{ link.label | translate }}
+              </a>
+              }
+            </span>
+          </div>
+        </div>
+      </mat-expansion-panel>
+      }
+    </div>
+  </section>
+</app-content-panel>

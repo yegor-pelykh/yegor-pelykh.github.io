@@ -1,0 +1,11 @@
+<app-content-panel>
+  <section class="contacts-section" aria-labelledby="contacts-title">
+    <h2 class="section-title" id="contacts-title">{{ 'contacts.title' | translate }}</h2>
+    <p class="intro">{{ 'contacts.intro' | translate }}</p>
+    <div class="contacts-list" role="list">
+      @for (contact of contacts(); track contact.type) {
+      <app-contact-item [contact]="contact"></app-contact-item>
+      }
+    </div>
+  </section>
+</app-content-panel>

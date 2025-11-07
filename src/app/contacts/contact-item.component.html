@@ -1,0 +1,24 @@
+<mat-card class="contact-card" appearance="outlined" role="listitem">
+  <div class="contact-content">
+    <div class="contact-icon" aria-hidden="true">
+      <mat-icon>{{ contact.icon }}</mat-icon>
+    </div>
+    <div class="contact-info">
+      <div class="contact-type">{{ contact.type }}</div>
+      <div class="contact-value">
+        @if (contact.link) {
+        <a [href]="contact.link" target="_blank" rel="noopener" tabindex="0">{{ contact.value }}</a>
+        } @else {
+        <span>{{ contact.value }}</span>
+        }
+      </div>
+    </div>
+    <div class="contact-actions">
+      <button mat-icon-button color="primary" (click)="copyToClipboard()"
+        [matTooltip]="copied() ? ('aria.copied' | translate) : ('aria.copy' | translate)"
+        [attr.aria-label]="'aria.copy_contact' | translate: {type: (contact.type | translate)}">
+        <mat-icon aria-hidden="true">{{ copied() ? 'check' : 'content_copy' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-card>
