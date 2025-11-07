@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /data/
+Allow: /
+
+Sitemap: https://yegor-pelykh.github.io/sitemap.xml

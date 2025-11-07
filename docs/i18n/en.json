@@ -1,0 +1,73 @@
+{
+  "nav": {
+    "welcome": "Welcome",
+    "projects": "Projects",
+    "resume": "Resume",
+    "contacts": "Contacts"
+  },
+  "welcome": {
+    "name": "Hi, I'm Yegor",
+    "desc1": "I turn lines of code into new possibilities and unexpected discoveries. During working hours, I build reliable desktop applications in C# and .NET for the medical field; in my free time, I experiment with different languages and frameworks in personal projects just for fun. I love diving into new things, sometimes even a bit too much. Besides coding, I enjoy gaming, experimenting with AI, philosophical conversations, and self-improvement in the most unexpected areas.",
+    "desc2": "UPD: Currently not in IT - serving in the country’s Defense forces.",
+    "skills": "Skills",
+    "projects": "Projects",
+    "resume": "Resume",
+    "contacts": "Contacts"
+  },
+  "projects": {
+    "title": "Projects",
+    "intro1": "Programming for me is more than just a job - it's a chance to experiment and bring my ideas to life. I enjoy creating projects that can be useful not only for myself, but for others too.",
+    "intro2": "Below are my projects. Each one is a new experience and an opportunity to learn something interesting. I don’t show everything, but what you see here is part of my journey.",
+    "intro3": "I’d be happy to chat, exchange ideas, or work on something together - it's always more fun as a team!",
+    "description": "Description",
+    "languages": "Languages",
+    "frameworks": "Frameworks and APIs",
+    "links": "Links"
+  },
+  "resume": {
+    "title": "Resume",
+    "intro1": "Want to know more about me and my skills?",
+    "intro2": "To keep my personal data safe, access to my resume is restricted and requires a special token. Just email me at <a href=\"mailto:yegor.dev@gmail.com?subject=Resume%20access%20token%20request\">yegor.dev@gmail.com</a>, and I’ll send you your token. Enter it below to view my resume in your preferred language. Your token will be valid for a whole year - plenty of time to explore my experience.",
+    "intro3": "Thanks for your interest! I look forward to connecting!",
+    "token": "Access Token",
+    "token_error": "Please enter a valid 32-character token.",
+    "lang_ru": "Russian",
+    "lang_en": "English",
+    "lang_uk": "Ukrainian",
+    "unlock_ru": "Open in Russian",
+    "unlock_en": "Open in English",
+    "unlock_uk": "Open in Ukrainian",
+    "error_unexpected": "Unexpected error. Please try again later.",
+    "error_network": "Network error: Unable to connect to the server. Please check your internet connection.",
+    "save": "Save Resume"
+  },
+  "contacts": {
+    "title": "Contacts",
+    "intro": "Feel free to reach out to me via any of the following channels."
+  },
+  "contact_type": {
+    "telegram": "Telegram",
+    "github": "GitHub",
+    "email": "Email"
+  },
+  "link_label": {
+    "github": "GitHub",
+    "live_demo": "Live Demo"
+  },
+  "aria": {
+    "main_content": "Main content",
+    "copy_contact": "Copy contact {{type}}",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "resume_auth_form": "Authorization form for resume access",
+    "avatar_photo": "Photo",
+    "skills": "Skills",
+    "go_to_home": "Go to home",
+    "change_language": "Change language",
+    "language_selection": "Language selection"
+  },
+  "copy_warning": {
+    "notice": "Copying information from this site without the <a href=\"mailto:yegor.dev@gmail.com?subject=Permission%20to%20copy\">author's</a> permission is prohibited.",
+    "copyright": "© Yegor Pelykh, 2025. All rights reserved."
+  }
+}
